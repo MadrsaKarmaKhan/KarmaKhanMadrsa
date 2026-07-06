@@ -735,6 +735,35 @@ export default function PrincipalDashboard({
     setShowAddStudentModal(true);
   };
 
+  const syncStudentToGoogleSheets = (student: Student) => {
+    const whList = schoolConfig.googleSheetsWebhooks || [];
+    const specific = whList.find(w => w.year === student.session);
+    const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+    if (webhookUrl) {
+      const payload = {
+        ...student,
+        studentName: student.name,
+        dob: student.dateOfBirth,
+        contact: student.contactNo,
+        mobile: student.contactNo,
+        syncType: "student"
+      };
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => {
+        console.log("Student webhook sync success", res);
+      })
+      .catch(err => {
+        console.error("Student webhook sync failed", err);
+      });
+    }
+  };
+
   const handleAddStudent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStudent.rollNo || !newStudent.name) {
@@ -755,6 +784,7 @@ export default function PrincipalDashboard({
       session: normalizeSession(newStudent.session || studentYearFilter)
     };
     setStudents(prev => [...prev, created]);
+    syncStudentToGoogleSheets(created);
     setShowAddStudentModal(false);
     // Reset inputs
     setNewStudent({
@@ -796,6 +826,7 @@ export default function PrincipalDashboard({
     }
 
     setStudents(prev => prev.map(s => s.id === editStudent.id ? editStudent : s));
+    syncStudentToGoogleSheets(editStudent);
     setShowEditStudentModal(false);
     setEditStudent(null);
   };
@@ -910,8 +941,9 @@ export default function PrincipalDashboard({
 
     // Upsert Student profile
     const studentIdx = students.findIndex(s => s.rollNo.toString().trim() === adminRollno.toString().trim() && normalizeSession(s.session) === normalizeSession(adminSession));
+    let finalStudent: Student;
     if (studentIdx === -1) {
-      const newStudentProfile: Student = {
+      finalStudent = {
         id: "s_" + Date.now(),
         rollNo: adminRollno.trim(),
         name: adminSname.trim(),
@@ -924,22 +956,24 @@ export default function PrincipalDashboard({
         dateOfBirth: adminDob,
         contactNo: "+91 99999 88888"
       };
-      setStudents(prev => [...prev, newStudentProfile]);
+      setStudents(prev => [...prev, finalStudent]);
     } else {
-      const updatedStudents = [...students];
-      updatedStudents[studentIdx] = {
-        ...updatedStudents[studentIdx],
+      finalStudent = {
+        ...students[studentIdx],
         name: adminSname.trim(),
         fatherName: adminFname.trim(),
         motherName: adminMname.trim(),
         address: adminAddress,
         className: adminSclass,
         session: adminSession,
-        photoUrl: adminPhoto || updatedStudents[studentIdx].photoUrl,
+        photoUrl: adminPhoto || students[studentIdx].photoUrl,
         dateOfBirth: adminDob
       };
+      const updatedStudents = [...students];
+      updatedStudents[studentIdx] = finalStudent;
       setStudents(updatedStudents);
     }
+    syncStudentToGoogleSheets(finalStudent);
 
     alert(`Successfully saved record for Roll: ${adminRollno}!`);
   };
@@ -1305,6 +1339,7 @@ export default function PrincipalDashboard({
     };
 
     setStudents(prev => [...prev, converted]);
+    syncStudentToGoogleSheets(converted);
 
     // 3. update applicant status
     setAdmissions(prev => prev.map(item => item.id === app.id ? { ...item, status: 'approved' } : item));
@@ -5904,7 +5939,7 @@ export default function PrincipalDashboard({
                     </div>
                   </div>
 
-                  <div className="mt-4 flex max-w-sm gap-2">
+                  <div className="mt-4 flex flex-col sm:flex-row max-w-xl gap-2">
                     <button
                       type="button"
                       onClick={async () => {
@@ -5936,6 +5971,48 @@ export default function PrincipalDashboard({
                       className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow cursor-pointer transition-colors"
                     >
                       Sync ALL Results to Google Sheets
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (!confirm(`Are you sure you want to sync ALL ${students.length} student profiles to Google Sheets? This might take a moment.`)) return;
+                        
+                        let success = 0;
+                        let errs = 0;
+                        for (const student of students) {
+                          try {
+                            const whList = schoolConfig.googleSheetsWebhooks || [];
+                            const specific = whList.find(w => w.year === student.session);
+                            const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+                            
+                            if (!webhookUrl) continue;
+                            
+                            const payload = {
+                              ...student,
+                              studentName: student.name,
+                              dob: student.dateOfBirth,
+                              contact: student.contactNo,
+                              mobile: student.contactNo,
+                              syncType: "student"
+                            };
+
+                            await fetch(webhookUrl, {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                              body: JSON.stringify(payload)
+                            });
+                            success++;
+                          } catch (e) {
+                            errs++;
+                            console.error("Student sync error:", e);
+                          }
+                        }
+                        alert(`Student Sync Complete!\nSuccessfully exported: ${success}\nErrors: ${errs}`);
+                      }}
+                      className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow cursor-pointer transition-colors"
+                    >
+                      Sync ALL Students to Google Sheets
                     </button>
                   </div>
                 </div>
