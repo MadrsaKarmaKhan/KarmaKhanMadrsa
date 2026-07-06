@@ -137,6 +137,10 @@ export default function App() {
             parsed.aboutText = "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds.";
             updated = true;
           }
+          if (!parsed.googleSheetsWebhookUrl || parsed.googleSheetsWebhookUrl.includes("AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw")) {
+            parsed.googleSheetsWebhookUrl = "https://script.google.com/macros/s/AKfycbyRZZMDvUsgL7z_O7z4EJw64YcBeM0QDFPcKbD4ETbZ42cU-ANYvvgwtQZoZZJZrAkK/exec";
+            updated = true;
+          }
           if (updated) {
             localStorage.setItem('nu_config', JSON.stringify(parsed));
             setSchoolConfig(parsed);
@@ -278,7 +282,7 @@ export default function App() {
   useEffect(() => {
     const fetchFromSheets = async () => {
       // The user provided this exact macro, so we will fetch from it by default if custom config is missing.
-      const defaultWebhookUrl = schoolConfig?.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+      const defaultWebhookUrl = schoolConfig?.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbyRZZMDvUsgL7z_O7z4EJw64YcBeM0QDFPcKbD4ETbZ42cU-ANYvvgwtQZoZZJZrAkK/exec";
       
       const webhooks = [...(schoolConfig?.googleSheetsWebhooks || [])];
       

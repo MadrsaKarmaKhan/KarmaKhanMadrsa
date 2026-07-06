@@ -738,7 +738,7 @@ export default function PrincipalDashboard({
   const syncStudentToGoogleSheets = (student: Student) => {
     const whList = schoolConfig.googleSheetsWebhooks || [];
     const specific = whList.find(w => w.year === student.session);
-    const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+    const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbyRZZMDvUsgL7z_O7z4EJw64YcBeM0QDFPcKbD4ETbZ42cU-ANYvvgwtQZoZZJZrAkK/exec";
     if (webhookUrl) {
       const payload = {
         ...student,
@@ -928,7 +928,7 @@ export default function PrincipalDashboard({
     // Webhook Sync
     const whList = schoolConfig.googleSheetsWebhooks || [];
     const specific = whList.find(w => w.year === newResultRecord.session || w.year === String(newResultRecord.passingYear));
-    const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+    const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbyRZZMDvUsgL7z_O7z4EJw64YcBeM0QDFPcKbD4ETbZ42cU-ANYvvgwtQZoZZJZrAkK/exec";
     if (webhookUrl) {
       fetch(webhookUrl, {
         method: 'POST',
@@ -1634,7 +1634,7 @@ export default function PrincipalDashboard({
             title="Systems Config"
           >
             <span className="text-xl">⚙️</span>
-            {!isSidebarCollapsed && <span>Systems Config</span>}
+            {!isSidebarCollapsed && <span>Systems Config (सिस्टम सेटिंग्स)</span>}
           </button>
 
           <button
@@ -5951,7 +5951,7 @@ export default function PrincipalDashboard({
                           try {
                             const whList = schoolConfig.googleSheetsWebhooks || [];
                             const specific = whList.find(w => w.year === result.session || w.year === String(result.passingYear));
-                            const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+                            const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbyRZZMDvUsgL7z_O7z4EJw64YcBeM0QDFPcKbD4ETbZ42cU-ANYvvgwtQZoZZJZrAkK/exec";
                             
                             if (!webhookUrl) continue;
                             
@@ -5984,7 +5984,7 @@ export default function PrincipalDashboard({
                           try {
                             const whList = schoolConfig.googleSheetsWebhooks || [];
                             const specific = whList.find(w => w.year === student.session);
-                            const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec";
+                            const webhookUrl = specific?.url || schoolConfig.googleSheetsWebhookUrl || "https://script.google.com/macros/s/AKfycbyRZZMDvUsgL7z_O7z4EJw64YcBeM0QDFPcKbD4ETbZ42cU-ANYvvgwtQZoZZJZrAkK/exec";
                             
                             if (!webhookUrl) continue;
                             
@@ -6013,6 +6013,192 @@ export default function PrincipalDashboard({
                       className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow cursor-pointer transition-colors"
                     >
                       Sync ALL Students to Google Sheets
+                    </button>
+                  </div>
+
+                  <div className="mt-4 bg-amber-50 dark:bg-amber-950/20 p-4 rounded-xl border border-amber-200 dark:border-amber-900/60 text-xs">
+                    <p className="font-extrabold text-amber-800 dark:text-amber-300 mb-1 flex items-center gap-1.5">
+                      ⚙️ Google Sheets Apps Script Setup Instructions (गूगल शीट ऑटो-सिंक सेटअप निर्देश)
+                    </p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-350 mb-3 leading-relaxed">
+                      यदि Sync करने पर गूगल शीट में डाटा नहीं दिख रहा है, तो ऐसा इसलिए है क्योंकि आपकी गूगल शीट के Apps Script कोड को स्टूडेंट डाटा और रिज़ल्ट दोनों को संभालने के लिए अपडेट करना होगा। नीचे दिए गए <b>4 आसान चरणों</b> का पालन करें:
+                      <br />
+                      <b>1.</b> अपनी Google Sheet खोलें, ऊपर मेनू में <b>Extensions ➔ Apps Script</b> (एक्सटेंशन ➔ ऐप्स स्क्रिप्ट) पर क्लिक करें।
+                      <br />
+                      <b>2.</b> वहाँ मौजूद पुराने कोड को पूरा डिलीट करें, और नीचे दिए गए बटन पर क्लिक करके <b>नया कोड कॉपी करके वहाँ पेस्ट कर दें</b>।
+                      <br />
+                      <b>3.</b> ऊपर दाईं ओर <b>Deploy ➔ New deployment</b> पर क्लिक करें। Gear आइकन पर क्लिक करके <b>Web app</b> चुनें। <i>Execute as:</i> <b>Me</b> रखें और <i>Who has access:</i> को <b>Anyone</b> करके Deploy दबाएं। (यदि पहली बार कर रहे हैं तो 'Authorize Access' करें)।
+                      <br />
+                      <b>4.</b> नए डेप्लॉयमेंट से मिलने वाले <b>Web app URL (Webhook URL)</b> को कॉपी करें और ऊपर <b>Default Webhook URL</b> में पेस्ट करके सेव करें।
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const code = `function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Determine sheet name
+    var sheetName = "Results";
+    if (data.syncType === "student" || (data.rollNo && !data.marks)) {
+      sheetName = "Students";
+    }
+    
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      // If active sheet (e.g., "Sheet1") is completely empty, rename and use it
+      var activeSheet = ss.getActiveSheet();
+      if (activeSheet && activeSheet.getLastRow() === 0) {
+        sheet = activeSheet;
+        try { sheet.setName(sheetName); } catch(err) {}
+      } else {
+        sheet = ss.insertSheet(sheetName);
+      }
+    }
+    
+    // 1. Handle Student Profile Sync
+    if (sheetName === "Students") {
+      var headers = ["Roll No", "Student Name", "Father's Name", "Mother's Name", "Class Name", "Session", "Date of Birth", "Contact No", "Address", "Photo URL", "ID"];
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow(headers);
+        sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#dcfce7"); // Green header background
+      }
+      
+      var rows = sheet.getDataRange().getValues();
+      var foundRowIndex = -1;
+      for (var i = 1; i < rows.length; i++) {
+        if (String(rows[i][0]).trim() === String(data.rollNo).trim() && String(rows[i][5]).trim() === String(data.session).trim()) {
+          foundRowIndex = i + 1;
+          break;
+        }
+      }
+      
+      var rowValues = [
+        data.rollNo || "",
+        data.studentName || data.name || "",
+        data.fatherName || "",
+        data.motherName || "",
+        data.className || "",
+        data.session || "",
+        data.dateOfBirth || data.dob || "",
+        data.contactNo || data.contact || "",
+        data.address || "",
+        data.photoUrl || "",
+        data.id || ""
+      ];
+      
+      if (foundRowIndex > -1) {
+        sheet.getRange(foundRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+      } else {
+        sheet.appendRow(rowValues);
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Student saved successfully" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // 2. Handle Results Sync
+    var headers = ["Roll No", "Student Name", "Father's Name", "Mother's Name", "Class Name", "Session", "Passing Year", "Exam Type", "Passed", "Percentage", "Division", "Marks Detail", "Photo URL", "ID"];
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(headers);
+      sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#eff6ff"); // Blue header background
+    }
+    
+    var rows = sheet.getDataRange().getValues();
+    var foundRowIndex = -1;
+    for (var i = 1; i < rows.length; i++) {
+      if (String(rows[i][0]).trim() === String(data.rollNo).trim() && 
+          String(rows[i][4]).trim() === String(data.className).trim() && 
+          String(rows[i][5]).trim() === String(data.session).trim() &&
+          String(rows[i][7]).trim() === String(data.examType || "Annual").trim()) {
+        foundRowIndex = i + 1;
+        break;
+      }
+    }
+    
+    var rowValues = [
+      data.rollNo || "",
+      data.studentName || "",
+      data.fatherName || "",
+      data.motherName || "",
+      data.className || "",
+      data.session || "",
+      data.passingYear || "",
+      data.examType || "Annual",
+      data.isPassed ? "Yes" : "No",
+      data.percentage ? data.percentage + "%" : "",
+      data.division || "",
+      JSON.stringify(data.marks || {}),
+      data.photoUrl || "",
+      data.id || ""
+    ];
+    
+    if (foundRowIndex > -1) {
+      sheet.getRange(foundRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+    } else {
+      sheet.appendRow(rowValues);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Result saved successfully" }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("Results") || ss.getActiveSheet();
+    var rows = sheet.getDataRange().getValues();
+    var headers = rows[0];
+    var data = [];
+    
+    for (var i = 1; i < rows.length; i++) {
+      var row = rows[i];
+      var item = {};
+      for (var j = 0; j < headers.length; j++) {
+        var key = headers[j];
+        if (key === "Roll No") item.rollNo = row[j];
+        else if (key === "Student Name") item.studentName = row[j];
+        else if (key === "Father's Name") item.fatherName = row[j];
+        else if (key === "Mother's Name") item.motherName = row[j];
+        else if (key === "Class Name") item.className = row[j];
+        else if (key === "Session") item.session = row[j];
+        else if (key === "Passing Year") item.passingYear = row[j];
+        else if (key === "Exam Type") item.examType = row[j];
+        else if (key === "Passed") item.isPassed = (row[j] === "Yes");
+        else if (key === "Percentage") item.percentage = parseFloat(String(row[j]).replace("%", ""));
+        else if (key === "Division") item.division = row[j];
+        else if (key === "Marks Detail") {
+          try {
+            item.marks = JSON.parse(row[j] || "{}");
+          } catch(pe) {
+            item.marks = {};
+          }
+        }
+        else if (key === "Photo URL") item.photoUrl = row[j];
+        else if (key === "ID") item.id = row[j];
+      }
+      data.push(item);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(data))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({ error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+                        navigator.clipboard.writeText(code);
+                        alert("Google Apps Script code successfully copied to clipboard! Paste it into your Google Apps Script project.");
+                      }}
+                      className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg cursor-pointer transition-colors"
+                    >
+                      📋 Copy Google Apps Script Code
                     </button>
                   </div>
                 </div>
