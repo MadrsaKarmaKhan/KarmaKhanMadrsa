@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { School, Sun, Moon, LogIn, ShieldAlert, GraduationCap, FileText, PhoneCall, Image, Bell, Heart, X, Edit2, BookOpen } from 'lucide-react';
+import { School, Sun, Moon, LogIn, ShieldAlert, GraduationCap, FileText, PhoneCall, Image, Bell, X, Edit2, BookOpen } from 'lucide-react';
 import { SchoolConfig, NewsItem } from '../types';
 
 interface HeaderProps {
@@ -46,7 +46,6 @@ export default function Header({
     { id: 'dua', label: config.navMenuDuaText || 'Daily Duas', icon: BookOpen, customIcon: config.navMenuDuaIcon },
     { id: 'results', label: config.navMenuResultsText || 'Exam Results', icon: GraduationCap, customIcon: config.navMenuResultsIcon },
     { id: 'admissions', label: config.isAdmissionOpen === false ? 'Admissions Closed' : (config.navMenuAdmissionsText || 'Admissions Open'), icon: FileText, customIcon: config.navMenuAdmissionsIcon },
-    { id: 'donate', label: config.navMenuDonateText || 'Donate', icon: Heart, customIcon: config.navMenuDonateIcon },
     { id: 'dashboard', label: config.navMenuDashboardText || (isLoggedIn ? 'Principal Panel' : 'Principal Office'), icon: ShieldAlert, customIcon: config.navMenuDashboardIcon },
   ];
 

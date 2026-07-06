@@ -104,6 +104,21 @@ export interface SchoolConfig {
   sessions?: string[];
   classes?: string[];
 
+  historyHeader?: string;
+  historyText?: string;
+  missionHeader?: string;
+  missionText?: string;
+  visionHeader?: string;
+  visionText?: string;
+  prog1Title?: string;
+  prog1Text?: string;
+  prog2Title?: string;
+  prog2Text?: string;
+  prog3Title?: string;
+  prog3Text?: string;
+  prog4Title?: string;
+  prog4Text?: string;
+
   // Hero backgrounds
   heroBg1?: string;
   heroBg2?: string;

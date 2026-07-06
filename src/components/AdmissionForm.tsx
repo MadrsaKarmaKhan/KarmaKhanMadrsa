@@ -279,7 +279,7 @@ export default function AdmissionForm({ onSubmit, admissions, gallery = [], conf
             <div className="text-left">
               <h4 className="text-sm font-bold text-emerald-900 dark:text-emerald-400">Application File Logged Successfully</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                Your admission payload has been transferred under administrative queue for Mufti Muhammad Shafiullah Sahib. Bring a copy of this sheet along with original certificates during the physical desk verification.
+                Your admission payload has been transferred under administrative queue for {config?.principalName || "Hazrat Maulana Mohammad Shahid Sahab Qasmi"}. Bring a copy of this sheet along with original certificates during the physical desk verification.
               </p>
             </div>
           </div>
@@ -390,10 +390,12 @@ export default function AdmissionForm({ onSubmit, admissions, gallery = [], conf
             
             {/* Signature Area */}
             <div className="flex flex-col items-end justify-end space-y-1">
-              <div className="w-40 border-b border-slate-300 dark:border-slate-800 text-center pb-2">
-                <span className="font-serif italic font-bold text-[11px] text-emerald-850 dark:text-teal-400">M. Shafiullah</span>
-              </div>
-              <span className="text-[10px] font-bold text-slate-500 mr-4">RECRUITMENT HEAD SIGNATURE</span>
+               <div className="w-40 border-b border-slate-300 dark:border-slate-800 text-center pb-2">
+                 <span className="font-serif italic font-bold text-[11px] text-emerald-850 dark:text-teal-400">
+                   {config?.principalName ? (config.principalName.replace("Hazrat Maulana", "").trim()) : "Mohammad Shahid Qasmi"}
+                 </span>
+               </div>
+               <span className="text-[10px] font-bold text-slate-500 mr-4">RECRUITMENT HEAD SIGNATURE</span>
             </div>
           </div>
         </div>
@@ -528,7 +530,7 @@ export default function AdmissionForm({ onSubmit, admissions, gallery = [], conf
                           APPROVED (स्वीकृत)
                         </h4>
                         <p className="text-[11px] text-slate-650 dark:text-slate-400 mt-1 leading-relaxed font-semibold">
-                          Mubarak! Your admission application has been approved by Hazrat Maulana Mufti Muhammad Shafiullah Sahib. Please physically report to school desk with original documents to finalize.
+                          Mubarak! Your admission application has been approved by {config?.principalName || "Hazrat Maulana Mohammad Shahid Sahab Qasmi"}. Please physically report to school desk with original documents to finalize.
                         </p>
                       </div>
                     </div>

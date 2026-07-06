@@ -110,14 +110,6 @@ export default function App() {
     config: true,
   });
 
-  useEffect(() => {
-    if (currentTab === 'donate') {
-      setTimeout(() => {
-        document.getElementById('donate')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-  }, [currentTab]);
-
   // Initial loader and migration effect
   useEffect(() => {
     // Migrate old default address/phone if present in stored local storage config to ensure user immediately sees the new address
@@ -125,12 +117,30 @@ export default function App() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (parsed && (parsed.address?.includes("Lucknow") || parsed.contactPhone === "+91 98765 43210")) {
-          parsed.address = "Noorul Uloom Campus Karma Khan District Sant Kabir Nagar Uttar Pradesh -272126";
-          parsed.contactPhone = "+91 9193984452";
-          parsed.whatsappNumber = "+919193984452";
-          localStorage.setItem('nu_config', JSON.stringify(parsed));
-          setSchoolConfig(parsed);
+        if (parsed) {
+          let updated = false;
+          if (parsed.address?.includes("Lucknow") || parsed.contactPhone === "+91 98765 43210") {
+            parsed.address = "Noorul Uloom Campus Karma Khan District Sant Kabir Nagar Uttar Pradesh -272126";
+            parsed.contactPhone = "+91 9193984452";
+            parsed.whatsappNumber = "+919193984452";
+            updated = true;
+          }
+          if (!parsed.principalName || parsed.principalName !== "Hazrat Maulana Mohammad Shahid Sahab Qasmi") {
+            parsed.principalName = "Hazrat Maulana Mohammad Shahid Sahab Qasmi";
+            parsed.principalSub = "Director of Education, Madrasa Arabia Noorul Uloom, Karma Khan, District Sant Kabir Nagar (U.P.)\nGeneral Secretary, Jamiat Ulema Khalilabad, Sant Kabir Nagar (U.P.)";
+            updated = true;
+          } else if (!parsed.principalSub || !parsed.principalSub.includes("Jamiat Ulema")) {
+            parsed.principalSub = "Director of Education, Madrasa Arabia Noorul Uloom, Karma Khan, District Sant Kabir Nagar (U.P.)\nGeneral Secretary, Jamiat Ulema Khalilabad, Sant Kabir Nagar (U.P.)";
+            updated = true;
+          }
+          if (!parsed.aboutText || parsed.aboutText !== "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds.") {
+            parsed.aboutText = "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds.";
+            updated = true;
+          }
+          if (updated) {
+            localStorage.setItem('nu_config', JSON.stringify(parsed));
+            setSchoolConfig(parsed);
+          }
         }
       } catch (e) {
         console.error("Migration error: ", e);
@@ -163,12 +173,55 @@ export default function App() {
     };
 
     unsubSchoolConfig = subscribeToFirebase('schoolData', 'config', (data, fromCache, dataChanged) => {
-      if (data && dataChanged) { lastFirebaseData.current['config'] = JSON.stringify(data); setSchoolConfig(data); }
+      if (data) { 
+        let parsed = { ...data };
+        let updated = false;
+        if (!parsed.principalName || parsed.principalName !== "Hazrat Maulana Mohammad Shahid Sahab Qasmi") {
+          parsed.principalName = "Hazrat Maulana Mohammad Shahid Sahab Qasmi";
+          parsed.principalSub = "Director of Education, Madrasa Arabia Noorul Uloom, Karma Khan, District Sant Kabir Nagar (U.P.)\nGeneral Secretary, Jamiat Ulema Khalilabad, Sant Kabir Nagar (U.P.)";
+          updated = true;
+        } else if (!parsed.principalSub || !parsed.principalSub.includes("Jamiat Ulema")) {
+          parsed.principalSub = "Director of Education, Madrasa Arabia Noorul Uloom, Karma Khan, District Sant Kabir Nagar (U.P.)\nGeneral Secretary, Jamiat Ulema Khalilabad, Sant Kabir Nagar (U.P.)";
+          updated = true;
+        }
+        if (!parsed.aboutText || parsed.aboutText !== "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds.") {
+          parsed.aboutText = "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds.";
+          parsed.whatsappNumber = "+919193984452"; // ensure whatsappNumber remains correct too
+          updated = true;
+        }
+        if (dataChanged || updated) {
+          lastFirebaseData.current['config'] = JSON.stringify(parsed); 
+          setSchoolConfig(parsed); 
+        }
+        if (updated) {
+          setTimeout(() => {
+            syncToFirebase('schoolData', 'config', parsed);
+          }, 1000);
+        }
+      }
       if (!fromCache) configLoaded = true;
       checkHideLoading();
     });
     unsubTeachers = subscribeToFirebase('schoolData', 'teachers', (data, fromCache, dataChanged) => {
-      if (data && dataChanged) { lastFirebaseData.current['teachers'] = JSON.stringify(data); setTeachers(data); }
+      if (data) { 
+        let parsed = Array.isArray(data) ? [...data] : [];
+        let updated = false;
+        if (parsed[0] && (parsed[0].name !== "Hazrat Maulana Mohammad Shahid Sahab Qasmi" || parsed[0].id === "t1")) {
+          parsed[0].name = "Hazrat Maulana Mohammad Shahid Sahab Qasmi";
+          parsed[0].designation = "Director of Education";
+          parsed[0].qualification = "Fazeelat from Darul Uloom Deoband, Specialist in Higher Theological Sciences";
+          updated = true;
+        }
+        if (dataChanged || updated) {
+          lastFirebaseData.current['teachers'] = JSON.stringify(parsed); 
+          setTeachers(parsed); 
+        }
+        if (updated) {
+          setTimeout(() => {
+            syncToFirebase('schoolData', 'teachers', parsed);
+          }, 1000);
+        }
+      }
       if (!fromCache) teachersLoaded = true;
       checkHideLoading();
     });
@@ -416,7 +469,7 @@ export default function App() {
 
       {/* Main dynamic section content area */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 w-full flex-grow">
-        {(currentTab === 'home' || currentTab === 'donate') && (
+        {currentTab === 'home' && (
           <Homepage
             config={schoolConfig}
             teachers={teachers}

@@ -30,7 +30,7 @@ export default function Footer({ config, onAdminClick }: FooterProps) {
             {config.schoolName}
           </h4>
           <p className="text-xs text-slate-400 leading-relaxed">
-            {config.aboutText || "Established in 1994, our Madrasa is dedicated to offering a highly refined balance of authentic religious scholars (Aalim & Hifz streams) and modern scientific streams (Computer science & general education) to prepare multi-dimensional young minds."}
+            {config.aboutText || "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds."}
           </p>
           <div className="flex items-center gap-2 text-[11px] text-amber-400/80 font-mono">
             <ShieldCheck className="w-3.5 h-3.5" /> Approved Educational Registry

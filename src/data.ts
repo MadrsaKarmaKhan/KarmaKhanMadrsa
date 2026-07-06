@@ -4,7 +4,7 @@ export const INITIAL_CONFIG: SchoolConfig = {
   schoolName: "Madrasa Arabia Noorul Uloom",
   schoolNameArabic: "المدرسة العربية نور العلوم",
   tagline: "Inspiring Excellence in Islamic Knowledge and Modern Education",
-  principalName: "Hazrat Maulana Mufti Muhammad Shafiullah Sahib",
+  principalName: "Hazrat Maulana Mohammad Shahid Sahab Qasmi",
   principalMessage: "Dear Students, Parents, and Well-wishers, Welcome to Madrasa Arabia Noorul Uloom. Our mission is to nurture the hearts and minds of the next generation with authentic Islamic values alongside high-quality modern academic streams. We strive to develop righteous characters who excel in science, computer technology, and Quranic wisdom. May Allah accept our humble efforts.",
   googleSheetsWebhookUrl: "https://script.google.com/macros/s/AKfycbzlXCkVwXgVQPqgAm3qbUsPZTrWAYeaZg_BLyj7ozCt3C7Ns1Y-teOFVcyA9esIqQA-tw/exec",
   principalPhotoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=350",
@@ -61,7 +61,7 @@ export const INITIAL_CONFIG: SchoolConfig = {
   // New config entries
   admissionNotice: "ADMISSION 2026: Online Applications Open",
   establishedYear: "Est. 1994",
-  principalSub: "Sheikh-ul-Hadith & Mufti",
+  principalSub: "Director of Education, Madrasa Arabia Noorul Uloom, Karma Khan, District Sant Kabir Nagar (U.P.)\nGeneral Secretary, Jamiat Ulema Khalilabad, Sant Kabir Nagar (U.P.)",
   principalTitleHeading: "Message from Hazrat Maulana's desk",
   principalLedgerTag: "Authorized Institution Ledger 2026",
   topper1Heading: "Topper #1 (First Place)",
@@ -76,7 +76,7 @@ export const INITIAL_CONFIG: SchoolConfig = {
   topper3Name: "Fatima Bi",
   topper3Badge: "88.5% (Aalimiat Class Topper)",
   topper3Blurb: "Exemplary scores in Arabic Jurisprudence (Fiqh/Tafseer studies).",
-  aboutText: "Established in 1994, our Madrasa is dedicated to offering a highly refined balance of authentic religious scholars (Aalim & Hifz streams) and modern scientific streams (Computer science & general education) to prepare multi-dimensional young minds.",
+  aboutText: "Established in 1973, our Madrasa is dedicated to offering a highly refined education spanning from L.K.G, U.K.G, Primary classes (1ST to 5TH with Sections A & B), and traditional oriental streams (Idadiya, Farsi,Hifz, and Arbi) to prepare multi-dimensional young minds.",
   mottoArabic: "رَّبِّ زِدْنِي عِلْمًا",
   mottoEnglish: '"O my Sustainer, increase me in knowledge." (Al-Quran - Surah Taha)',
   footerCreditTag: "for Academic Excellence in Computer Lit & Ifta",
@@ -209,9 +209,9 @@ export const INITIAL_RESULTS: Result[] = [
 export const INITIAL_TEACHERS: Teacher[] = [
   {
     id: "t1",
-    name: "Hazrat Maulana Mufti Muhammad Shafiullah Sahib",
-    designation: "Principal & Senior Sheikh-ul-Hadith",
-    qualification: "Fazeelat from Darul Uloom Deoband, Specialization in Ifta (Fatwa)",
+    name: "Hazrat Maulana Mohammad Shahid Sahab Qasmi",
+    designation: "Director of Education",
+    qualification: "Fazeelat from Darul Uloom Deoband, Specialist in Higher Theological Sciences",
     photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300",
     phone: "+91 98765 00111",
     email: "principal@noorululoom.edu"
